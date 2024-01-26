@@ -1,0 +1,12 @@
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: "github.com/ebisaan/proto/golang"
+plugins:
+  - plugin: buf.build/protocolbuffers/go
+    out: golang/
+    opt: paths=source_relative
+  - plugin: buf.build/grpc/go
+    out: golang/
+    opt: paths=source_relative

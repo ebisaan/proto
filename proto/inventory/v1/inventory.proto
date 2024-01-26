@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package inventory.v1;
+
+option go_package = "github.com/ebisaan/proto/golang/inventory";
+
+message Product {
+    int64 id = 1;
+    string name = 2;
+    string main_category = 3;
+    string sub_category = 4;
+    string stock_number = 5;
+    string image = 6;
+    double discount_price = 7;
+    double actual_price = 8;
+    string currency_code = 9;
+    string currency_symbol = 10;
+}
+
+message GetProductByIDRequest {
+    int64 id = 1;
+}
+
+message GetProductByIDResponse {
+    Product product = 1;
+}
+
+message GetProductsRequest {
+    Pagination pagination = 1;
+    Query query = 2;
+
+    message Query {
+    }
+}
+
+message GetProductsResponse {
+    repeated Product products = 1;
+    Metadata metadata = 2;
+}
+
+message Pagination {
+    int32 page = 1;
+    int32 page_size = 2;
+}
+
+message Metadata {
+    int32 current_page = 1;
+    int32 first_page = 2;
+    int32 last_page = 3;
+    int32 page_size = 4;
+    int32 total_records = 5;
+}

@@ -1,0 +1,27 @@
+name: lint-and-check-breaking
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - v**
+  pull_request:
+    branches:
+      - main
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup source
+        uses: actions/checkout@v4
+      - name: Install go
+        uses: actions/setup-go@v5.0.0
+        with:
+          go-version: 1.21.5
+      - name: Install buf
+        run: go install github.com/bufbuild/buf/cmd/buf@v1.29.0
+      - name: Lint proto files
+        run: buf lint proto
+      - name: Test breaking proto files
+        run: buf breaking proto --against "https://github.com/ebisaan/proto.git#branch=main,subdir=proto"

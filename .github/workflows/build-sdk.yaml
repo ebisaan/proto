@@ -1,0 +1,57 @@
+name: Build protobuffer and grpc sdk
+on:
+  push:
+    tags:
+      - "*/v*.*.*"
+permissions:
+  contents: write
+jobs:
+  call_lint_and_check_breaking:
+    uses: ./.github/workflows/lint-and-check-breaking-proto.yaml
+  go_sdk:
+    needs: call_lint_and_check_breaking
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install go
+        uses: actions/setup-go@v5.0.0
+        with:
+          go-version: 1.21.5
+          cache-dependency-path: "**/*.sum"
+      - name: Cache buf
+        id: cache-buf
+        uses: actions/cache@v3
+        with:
+          key: install-buf
+          path: /home/runner/go/bin/buf
+      - name: Install buf
+        if: ${{ steps.cache-buf.outputs.cache-hit != 'true' }}
+        run: go install github.com/bufbuild/buf/cmd/buf@v1.29.0
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set environment varibles
+        run: |
+          REF=${GITHUB_REF#refs/*/}
+          VERSION=${REF#*/}
+          if echo $REF | grep -qE 'v[01]\.[0-9]+\.[0-9]+'
+          then
+            DIR="golang/${REF%\/v*.*.*}"
+          else
+            DIR="golang/${REF%.*.*}"
+          fi
+          echo "DIR=$DIR" >> "$GITHUB_ENV"
+          echo "GO_TAG=${DIR}/${VERSION}" >> "$GITHUB_ENV"
+      - name: Create a sdk for each microservice
+        run: |
+          buf generate proto
+          mkdir -p ${DIR}
+          cd ${DIR} && \
+          (go mod init github.com/ebisaan/proto/${DIR} || true) && \
+          go mod tidy
+      - name: Commit change
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git add . && git commit -am "Update go sdk"
+          git push origin HEAD:main
+          git tag -fa ${GO_TAG} -m ${GO_TAG}
+          git push origin refs/tags/${GO_TAG}

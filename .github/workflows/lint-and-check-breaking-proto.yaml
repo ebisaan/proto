@@ -1,26 +1,33 @@
-name: lint-and-check-breaking
+name: Lint and check breaking proto
 on:
   workflow_dispatch:
   push:
     branches:
       - main
-    tags:
-      - v**
   pull_request:
     branches:
       - main
+  workflow_call:
 jobs:
-  setup:
+  lint-and-check-breaking:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup source
-        uses: actions/checkout@v4
       - name: Install go
         uses: actions/setup-go@v5.0.0
         with:
           go-version: 1.21.5
+          cache-dependency-path: "**/*.sum"
+      - name: Cache buf
+        id: cache-buf
+        uses: actions/cache@v3
+        with:
+          key: install-buf
+          path: /home/runner/go/bin/buf
       - name: Install buf
+        if: ${{ steps.cache-buf.outputs.cache-hit != 'true' }}
         run: go install github.com/bufbuild/buf/cmd/buf@v1.29.0
+      - name: Checkout source
+        uses: actions/checkout@v4
       - name: Lint proto files
         run: buf lint proto
       - name: Test breaking proto files

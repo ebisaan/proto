@@ -6,10 +6,10 @@ on:
 permissions:
   contents: write
 jobs:
-  # call_lint_and_check_breaking:
-  #   uses: ./.github/workflows/lint-and-check-breaking-proto.yaml
+  call_lint_and_check_breaking:
+    uses: ./.github/workflows/lint-and-check-breaking-proto.yaml
   go_sdk:
-    # needs: call_lint_and_check_breaking
+    needs: call_lint_and_check_breaking
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source

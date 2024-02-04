@@ -2,14 +2,17 @@ syntax = "proto3";
 
 package inventory.v1;
 
-option go_package = "github.com/ebisaan/proto/golang/inventory";
+service InventoryService {
+    rpc GetProductByID(GetProductByIDRequest) returns (GetProductByIDResponse) {}
+    rpc GetProducts(GetProductsRequest) returns (GetProductsResponse) {}
+}
 
 message Product {
     int64 id = 1;
     string name = 2;
     string main_category = 3;
     string sub_category = 4;
-    string stock_number = 5;
+    int32 stock_number = 5;
     string image = 6;
     double discount_price = 7;
     double actual_price = 8;

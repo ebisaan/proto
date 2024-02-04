@@ -1,7 +1,7 @@
-gen: lint test
+gen: lint 
 	buf generate proto
 	for service in "inventory"; do \
-	cd golang/$$service/v1 && \
+	cd golang/$$service && \
 		(go mod init github.com/ebisaan/proto/golang/$$service || true) && \
 		go mod tidy; \
 	done

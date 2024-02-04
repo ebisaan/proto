@@ -12,11 +12,14 @@ jobs:
     needs: call_lint_and_check_breaking
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
       - name: Install go
         uses: actions/setup-go@v5.0.0
         with:
           go-version: 1.21.5
-          cache-dependency-path: "**/*.sum"
+          cache-dependency-path: |
+            golang/**/*.sum
       - name: Cache buf
         id: cache-buf
         uses: actions/cache@v3
@@ -26,8 +29,6 @@ jobs:
       - name: Install buf
         if: ${{ steps.cache-buf.outputs.cache-hit != 'true' }}
         run: go install github.com/bufbuild/buf/cmd/buf@v1.29.0
-      - name: Checkout source
-        uses: actions/checkout@v4
       - name: Set environment varibles
         run: |
           REF=${GITHUB_REF#refs/*/}

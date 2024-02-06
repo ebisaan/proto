@@ -6,7 +6,14 @@ managed:
 plugins:
   - plugin: buf.build/protocolbuffers/go
     out: golang/
-    opt: paths=source_relative
+    opt: module=github.com/ebisaan/proto/golang/ebisaan
+      # opt: paths=source_relative
   - plugin: buf.build/grpc/go
     out: golang/
-    opt: paths=source_relative
+    opt: module=github.com/ebisaan/proto/golang/ebisaan
+      # opt: paths=source_relative
+      # - plugin: buf.build/grpc-ecosystem/gateway
+      #   out: golang/
+      #   opt:
+      #     - paths=source_relative
+      #     - generate_unbound_methods=true

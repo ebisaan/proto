@@ -28,7 +28,7 @@ jobs:
       - name: Lint proto files
         run: buf lint proto
       - name: Test breaking proto files
-        if: ${{ vars.DISABLE_BREAKING_CHECK == false }}
+        if: ${{ vars.DISABLE_BREAKING_CHECK == 'false' }}
         run: |
           buf breaking proto --against "https://github.com/ebisaan/proto.git#branch=main,subdir=proto"
           buf breaking proto --against "https://github.com/ebisaan/proto.git#branch=main,subdir=proto,ref=HEAD~1"

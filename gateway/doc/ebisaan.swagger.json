@@ -1,15 +1,10 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "ebisaan/helloworld/v1beta1/helloworld.proto",
+    "title": "ebisaan/inventory/v1beta1/inventory.proto",
     "version": "version not set"
   },
-  "host": "localhost:8080",
-  "schemes": ["http", "https"],
   "tags": [
-    {
-      "name": "GreeterService"
-    },
     {
       "name": "InventoryService"
     }
@@ -21,39 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/v1/example/greet": {
-      "post": {
-        "operationId": "GreeterService_SayHello",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/v1beta1SayHelloResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response.",
-            "schema": {
-              "$ref": "#/definitions/rpcStatus"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/v1beta1SayHelloRequest"
-            }
-          }
-        ],
-        "tags": [
-          "GreeterService"
-        ]
-      }
-    },
-    "/v1beta1/products": {
+    "/inventory/v1beta1/products": {
       "get": {
         "operationId": "InventoryService_GetProducts",
         "responses": {
@@ -121,7 +84,7 @@
         ]
       }
     },
-    "/v1beta1/products/{id}": {
+    "/inventory/v1beta1/products/{id}": {
       "get": {
         "operationId": "InventoryService_GetProductByID",
         "responses": {
@@ -433,22 +396,6 @@
         "version": {
           "type": "string",
           "format": "int64"
-        }
-      }
-    },
-    "v1beta1SayHelloRequest": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "v1beta1SayHelloResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string"
         }
       }
     },

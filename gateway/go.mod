@@ -3,7 +3,7 @@ module github.com/ebisaan/proto/gateway
 go 1.21.6
 
 require (
-	github.com/ebisaan/proto/golang/ebisaan/inventory v0.3.0-rc
+	github.com/ebisaan/proto/golang/ebisaan/inventory v0.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.1
 	go.uber.org/zap v1.26.0
 	google.golang.org/grpc v1.61.1

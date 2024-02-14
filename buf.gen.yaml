@@ -14,3 +14,8 @@ plugins:
     out: golang/
       # opt: module=github.com/ebisaan/proto/golang/ebisaan
     opt: paths=source_relative
+  - plugin: buf.build/grpc-ecosystem/openapiv2
+    out: gateway/doc
+    opt:
+      - allow_merge=true
+      - merge_file_name=ebisaan

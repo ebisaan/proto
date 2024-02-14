@@ -2,12 +2,36 @@ syntax = "proto3";
 
 package ebisaan.inventory.v1beta1;
 
+import "google/api/annotations.proto";
+
 service InventoryService {
-    rpc GetProductByID(GetProductByIDRequest) returns (GetProductByIDResponse) {}
-    rpc GetProducts(GetProductsRequest) returns (GetProductsResponse) {}
-    rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse) {}
-    rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse) {}
-    rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse) {}
+    rpc GetProductByID(GetProductByIDRequest) returns (GetProductByIDResponse) {
+        option (google.api.http) = {
+            get: "/inventory/v1beta1/products/{id}"
+        };
+    }
+    rpc GetProducts(GetProductsRequest) returns (GetProductsResponse) {
+        option (google.api.http) = {
+            get: "/inventory/v1beta1/products"
+        };
+    }
+    rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse) {
+        option (google.api.http) = {
+            post: "/inventory/v1beta1/products"
+            body: "*"
+        };
+    }
+    rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse) {
+        option (google.api.http) = {
+            patch: "/inventory/v1beta1/products/{id}"
+            body: "*"
+        };
+    }
+    rpc DeleteProduct(DeleteProductRequest) returns (DeleteProductResponse) {
+        option (google.api.http) = {
+            delete: "/inventory/v1beta1/products/{id}"
+        };
+    }
 }
 
 message Product {
